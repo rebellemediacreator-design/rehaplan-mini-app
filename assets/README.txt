@@ -1,0 +1,1 @@
+Lokale Bilddateien für die Fußheber-Landingpage. Keine externen Stockfotos.
