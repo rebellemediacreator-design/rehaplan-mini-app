@@ -6,37 +6,74 @@
 <meta name="theme-color" content="#020b13">
 <title>Dein Fuß. Deine Freiheit.</title>
 <style>
-:root{--bg:#020b13;--cream:#efe1c8;--blue:#2d72ad;--line:#70583b}
+:root{--bg:#020b13;--cream:#efe1c8;--blue:#2d72ad;--line:#70583b;--panel:#061523}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:#020b13;color:white;font-family:Arial,Helvetica,sans-serif}
-.page{width:min(1024px,100%);margin:auto;padding:0 0 34px}
-.poster-wrap{position:relative;width:100%;overflow:hidden}
+body{margin:0;background:var(--bg);color:#fff;font-family:Arial,Helvetica,sans-serif}
+.page{width:min(1024px,100%);margin:auto;padding:0 0 28px}
+.poster-wrap{position:relative;width:100%;overflow:hidden;background:var(--bg)}
 .poster{display:block;width:100%;height:auto}
-.timer-card{position:absolute;top:13.2%;right:2.7%;width:16.4%;aspect-ratio:.82;border:1px solid rgba(184,155,108,.72);border-radius:18px;background:linear-gradient(180deg,rgba(7,30,50,.98),rgba(3,17,29,.99));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.1%;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-.timer-label{font-size:clamp(.48rem,1.35vw,.94rem);letter-spacing:.02em}
+.timer-card{position:absolute;top:13.2%;right:2.7%;width:16.4%;aspect-ratio:.82;border:1px solid rgba(184,155,108,.72);border-radius:18px;background:linear-gradient(180deg,rgba(7,30,50,.98),rgba(3,17,29,.99));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.1%;z-index:5}
+.timer-label{font-size:clamp(.48rem,1.35vw,.94rem)}
 .timer-display{font-family:Georgia,serif;color:var(--cream);font-size:clamp(2.1rem,7.1vw,5.7rem);line-height:.9;margin:.08em 0}
 .timer-min{font-size:clamp(.48rem,1.4vw,.95rem);letter-spacing:.08em}
-.timer-controls{position:absolute;top:28.4%;right:2.5%;width:17%;display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.timer-controls button{border:1px solid rgba(239,225,200,.45);background:#103d66;color:#fff;border-radius:999px;padding:.55em .65em;font-weight:800;font-size:clamp(.48rem,1vw,.78rem);cursor:pointer}
+.timer-controls{position:absolute;top:28.4%;right:2.5%;width:17%;display:grid;grid-template-columns:1fr 1fr;gap:6px;z-index:6}
+.timer-controls button,.mobile-controls button,.day-actions button{border:1px solid rgba(239,225,200,.45);background:#103d66;color:#fff;border-radius:999px;padding:.55em .65em;font-weight:800;cursor:pointer}
 .timer-controls button.secondary{background:rgba(4,17,29,.92)}
-.timer-controls button:focus-visible{outline:3px solid #fff;outline-offset:2px}
-.status{position:absolute;top:31.9%;right:2.7%;width:16.5%;text-align:center;font-size:clamp(.42rem,.9vw,.72rem);color:#d8e3ec}
+.status{position:absolute;top:31.9%;right:2.7%;width:16.5%;text-align:center;font-size:clamp(.42rem,.9vw,.72rem);color:#d8e3ec;z-index:6}
+
+/* Dynamischer 7-Tage-Bereich – liegt exakt über dem bisherigen Übungsraster */
+.plan-overlay{position:absolute;left:2.75%;right:2.75%;top:35.35%;height:43.75%;background:var(--bg);z-index:3;padding:.4% 0 0}
+.plan-title{height:6.2%;display:flex;justify-content:space-between;align-items:center;color:#2d72ad;letter-spacing:.11em;font-weight:800;font-size:clamp(.55rem,1.55vw,1.08rem);padding:0 .2%}
+.plan-title strong{color:var(--cream);letter-spacing:.04em}
+.exercise-grid{height:92.5%;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:1fr 1fr;gap:1.05%}
+.exercise-card{border:1px solid rgba(112,88,59,.9);border-radius:12px;overflow:hidden;background:#04111d;display:flex;flex-direction:column;min-width:0}
+.exercise-card:nth-child(-n+4){grid-column:span 3}
+.exercise-card:nth-child(n+5){grid-column:span 4}
+.exercise-image{height:47%;width:100%;object-fit:cover;object-position:center center;display:block;filter:saturate(.85) contrast(1.04)}
+.exercise-copy{padding:3.2% 4%;display:flex;flex-direction:column;gap:.12em;min-height:0;flex:1}
+.exercise-head{display:flex;align-items:center;gap:.45em}
+.exercise-num{background:var(--cream);color:#111;border-radius:4px;min-width:1.65em;height:1.65em;display:grid;place-items:center;font-weight:900;font-size:clamp(.45rem,1.05vw,.78rem)}
+.exercise-time{font-weight:800;font-size:clamp(.42rem,.87vw,.68rem)}
+.exercise-name{color:#fff;font-size:clamp(.46rem,.95vw,.72rem);letter-spacing:.04em;text-transform:uppercase;margin:.22em 0 .12em;line-height:1.15}
+.exercise-desc{color:#ddd;font-size:clamp(.40rem,.76vw,.60rem);line-height:1.22;margin:0}
+.exercise-dose{margin-top:auto;background:#123f6c;border-radius:4px;text-align:center;padding:.22em;color:#dce8f4;font-size:clamp(.38rem,.72vw,.58rem);text-transform:uppercase}
+
+/* Der vorhandene Fortschrittsbereich in der Mitte wird benutzt, kein zweiter Zähler darunter */
+.progress-overlay{position:absolute;left:35.0%;top:80.2%;width:31.4%;height:11.3%;z-index:4;background:linear-gradient(180deg,rgba(5,17,29,.985),rgba(3,13,23,.985));border:1px solid rgba(112,88,59,.88);border-radius:12px;padding:1.25% 1.7%;display:grid;grid-template-columns:1fr 21%;gap:2%}
+.progress-main{min-width:0}
+.progress-title{color:var(--cream);font-size:clamp(.48rem,1.15vw,.82rem);letter-spacing:.08em;margin-bottom:.55em}
+.weekdots{display:grid;grid-template-columns:repeat(7,1fr);gap:2%;align-items:end}
+.dot-item{text-align:center;font-size:clamp(.32rem,.68vw,.54rem);color:#ddd}
+.dot{width:clamp(10px,1.8vw,20px);aspect-ratio:1;border:1.5px solid var(--cream);border-radius:50%;margin:.25em auto 0;background:transparent}
+.dot.done{background:var(--blue);box-shadow:inset 0 0 0 2px #071522}
+.progress-caption{font-size:clamp(.36rem,.76vw,.59rem);margin-top:.55em;color:#eee}
+.day-box{border-radius:6px;background:#123f6c;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.day-box span{font-size:clamp(.34rem,.7vw,.56rem)}
+.day-box strong{font-family:Georgia,serif;color:var(--cream);font-size:clamp(1.15rem,3.6vw,2.8rem);line-height:1}
+.day-actions{display:flex;gap:10px;justify-content:center;padding:16px 12px 0}
+.day-actions button{padding:12px 18px;font-size:1rem}
+.day-actions button.secondary{background:#071e32}
 .mobile-controls{display:none;padding:14px 12px 0;gap:10px;grid-template-columns:1fr 1fr 1fr}
-.mobile-controls button{border:1px solid var(--line);background:#174c7b;color:white;border-radius:999px;padding:13px 12px;font-weight:800}
-.note{max-width:900px;margin:18px auto 0;padding:0 18px;text-align:center;color:#9dacb8;font-size:.86rem;line-height:1.45}
+.note{max-width:900px;margin:14px auto 0;padding:0 18px;text-align:center;color:#9dacb8;font-size:.86rem;line-height:1.45}
 @media(max-width:680px){
   .timer-card{top:12.9%;right:2.3%;width:17.2%;border-radius:10px}
   .timer-controls,.status{display:none}
-  .mobile-controls{display:grid;position:sticky;bottom:0;background:linear-gradient(transparent,#020b13 28%);padding-top:28px}
+  .mobile-controls{display:grid;position:sticky;bottom:0;background:linear-gradient(transparent,#020b13 28%);padding-top:28px;z-index:20}
+  .exercise-card{border-radius:6px}
+  .exercise-copy{padding:2.5% 3%}
+  .exercise-desc{display:none}
+  .day-actions{padding-top:12px}
+  .day-actions button{font-size:.9rem;padding:11px 14px}
 }
-@media(print){.timer-controls,.mobile-controls,.note{display:none!important}.page{padding:0}}
+@media(print){.timer-controls,.mobile-controls,.note,.day-actions{display:none!important}.page{padding:0}}
 </style>
 </head>
 <body>
 <main class="page">
   <div class="poster-wrap">
-    <img class="poster" src="assets/poster.png" alt="20-Minuten-Übungsprogramm gegen Fußheberschwäche mit sieben Übungen für einen älteren Patienten">
+    <img class="poster" src="assets/poster.png" alt="Fußheber-Trainingsprogramm im dunklen RE:BELLE-Media-Layout">
+
     <section class="timer-card" aria-label="20-Minuten-Timer">
       <div class="timer-label">TÄGLICH NUR</div>
       <div class="timer-display" id="timer">20:00</div>
@@ -49,89 +86,146 @@ body{margin:0;background:#020b13;color:white;font-family:Arial,Helvetica,sans-se
       <button id="done" type="button">FERTIG</button>
     </div>
     <div class="status" id="status" aria-live="polite">Bereit für dein Training.</div>
+
+    <section class="plan-overlay" aria-live="polite">
+      <div class="plan-title"><span>DEIN 20-MINUTEN-PROGRAMM</span><strong id="dayTitle">TAG 1 · AKTIVIEREN</strong></div>
+      <div class="exercise-grid" id="exerciseGrid"></div>
+    </section>
+
+    <section class="progress-overlay" aria-label="Fortschritt der aktuellen Trainingswoche">
+      <div class="progress-main">
+        <div class="progress-title">DEIN FORTSCHRITT</div>
+        <div class="weekdots" id="weekDots"></div>
+        <div class="progress-caption" id="progressCaption">ZIEL: 7 TAGE IN FOLGE</div>
+      </div>
+      <div class="day-box"><span>TAG</span><strong id="dayNumber">1</strong><span>VON 7</span></div>
+    </section>
+  </div>
+
+  <div class="day-actions">
+    <button id="prevDay" class="secondary" type="button">← Vorheriger Tag</button>
+    <button id="finishDay" type="button">✓ Heute geschafft</button>
+    <button id="nextDay" class="secondary" type="button">Nächster Tag →</button>
   </div>
   <div class="mobile-controls">
     <button id="mStart" type="button">Start</button>
     <button id="mPause" type="button">Pause</button>
     <button id="mReset" type="button">Neu</button>
   </div>
-  <p class="note">Schmerzfrei trainieren. Bei neuer oder zunehmender Schwäche, häufigem Stolpern oder neuen Lähmungserscheinungen bitte ärztlich oder physiotherapeutisch rückmelden.</p>
-
-<div id="dayTracker" style="max-width:900px;margin:24px auto;padding:18px;border:1px solid #70583b;border-radius:18px;background:#071e32;color:#fff">
-<h2 style="margin-top:0;color:#efe1c8">Dein Tagesfortschritt</h2>
-<p>Klicke nach dem Training auf <b>Heute geschafft</b>. Beim nächsten Öffnen wird automatisch der nächste Tag angezeigt.</p>
-<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-<div style="font-size:1.3rem">Aktueller Tag: <span id="currentDay" style="color:#efe1c8;font-weight:bold">1</span> / 30</div>
-<button id="doneBtn" style="background:#2d72ad;color:white;border:none;padding:14px 24px;border-radius:999px;font-weight:bold;cursor:pointer">✅ Heute geschafft</button>
-</div>
-<div style="margin-top:14px;background:#0d2740;border-radius:999px;height:14px;overflow:hidden">
-<div id="progressBar" style="height:100%;width:3.3%;background:#2d72ad"></div>
-</div>
-</div>
-<script>
-(function(){
- let day=parseInt(localStorage.getItem('rehaday')||'1');
- if(day<1) day=1;
- if(day>30) day=30;
- const d=document.getElementById('currentDay');
- const b=document.getElementById('progressBar');
- function render(){
- d.textContent=day;
- b.style.width=(day/30*100)+'%';
- }
- render();
- document.getElementById('doneBtn').onclick=function(){
-   if(day<30){day++; localStorage.setItem('rehaday',day); render(); alert('Super! Morgen startet automatisch Tag '+day+' 🖤');}
-   else{alert('Herzlichen Glückwunsch! Alle 30 Tage geschafft!');}
- };
-})();
-</script>
-
+  <p class="note">Langsam und kontrolliert trainieren. Im Stand immer an einer stabilen Lehne oder Arbeitsfläche festhalten. Keine ruckartigen Bewegungen und keine Bodenübungen. Bei neuer oder zunehmender Schwäche, Schmerzen, Schwindel oder häufigem Stolpern bitte ärztlich oder physiotherapeutisch rückmelden.</p>
 </main>
+
 <script>
 (() => {
-  let seconds = 20 * 60;
-  let interval = null;
-  const display = document.getElementById('timer');
-  const status = document.getElementById('status');
-  const render = () => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    display.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-    document.title = display.textContent + ' – Dein Fuß. Deine Freiheit.';
-  };
-  const start = () => {
-    if (interval || seconds <= 0) return;
-    status.textContent = 'Training läuft.';
-    interval = setInterval(() => {
-      seconds -= 1;
-      render();
-      if (seconds <= 0) {
-        clearInterval(interval); interval = null;
-        status.textContent = 'Geschafft! Dein Training ist beendet.';
-        alert('Stark gemacht – deine 20 Minuten sind geschafft.');
-      }
-    }, 1000);
-  };
-  const pause = () => {
-    if (interval) clearInterval(interval);
-    interval = null;
-    status.textContent = 'Timer pausiert.';
-  };
-  const reset = () => {
-    if (interval) clearInterval(interval);
-    interval = null;
-    seconds = 20 * 60;
-    render();
-    status.textContent = 'Bereit für dein Training.';
-  };
-  const done = () => {
-    pause();
-    status.textContent = 'Heute geschafft. Jeder Schritt zählt.';
-    alert('Training geschafft. Jeder Schritt zählt.');
-  };
-  [['start',start],['mStart',start],['pause',pause],['mPause',pause],['reset',reset],['mReset',reset],['done',done]].forEach(([id,fn]) => document.getElementById(id)?.addEventListener('click',fn));
-  render();
+  const plans = [
+    {title:'TAG 1 · AKTIVIEREN',items:[
+      ['Aktive Fußhebung','Ferse am Boden lassen, Vorfuß langsam anheben.','12–15 Wiederholungen',1,'2 MIN'],
+      ['Zehen auffächern','Zehen anheben, spreizen und locker absetzen.','10 Wiederholungen',2,'2 MIN'],
+      ['Isometrie gegen Druck','Vorfuß gegen den anderen Fuß drücken, ohne Bewegung.','5 × 5 Sek. halten',3,'3 MIN'],
+      ['Ferse–Spitze im Wechsel','Im Sitzen langsam zwischen Ferse und Vorfuß wechseln.','15 Wechsel',4,'3 MIN'],
+      ['Aktiv-assistiert','Mit einem Handtuch sanft unterstützen, selbst mitarbeiten.','10–12 Wiederholungen',7,'3 MIN'],
+      ['Sitzmarsch mit Fußzug','Knie leicht anheben und Fußspitze gleichzeitig hochziehen.','10 je Seite',5,'3 MIN'],
+      ['Wade und Fuß mobilisieren','Fußspitze mit dem Tuch sanft heranziehen.','2 × 20 Sek.',7,'4 MIN']
+    ]},
+    {title:'TAG 2 · KONTROLLE',items:[
+      ['Langsames Absenken','Fußspitze anheben und besonders langsam absenken.','10 Wiederholungen',1,'3 MIN'],
+      ['Fußalphabet klein','Mit der Fußspitze kleine Buchstaben in die Luft schreiben.','A bis H',2,'2 MIN'],
+      ['Außenkante aktivieren','Vorfuß leicht nach außen führen, Knie bleibt ruhig.','10 Wiederholungen',5,'3 MIN'],
+      ['Handtuchhilfe','Fuß anheben, nur so viel Hilfe wie nötig geben.','10 Wiederholungen',3,'3 MIN'],
+      ['Band leicht','Mit sehr leichtem Band den Fuß langsam hochziehen.','8–10 Wiederholungen',6,'3 MIN'],
+      ['Fersenstand am Stuhl','Mit Halt beide Vorfüße anheben, Fersen bleiben stehen.','8–10 Wiederholungen',4,'3 MIN'],
+      ['Locker ausstreichen','Unterschenkel und Fuß sanft lockern, nicht drücken.','2 Minuten',7,'3 MIN']
+    ]},
+    {title:'TAG 3 · KOORDINATION',items:[
+      ['Fußhebung mit Takt','Langsam anheben, zwei Sekunden halten, langsam senken.','10 Wiederholungen',1,'3 MIN'],
+      ['Zielpunkte antippen','Mit der Fußspitze drei gedachte Punkte antippen.','3 Runden',2,'3 MIN'],
+      ['Knie und Fuß zusammen','Knie anheben, Fußspitze gleichzeitig Richtung Nase ziehen.','8 je Seite',5,'3 MIN'],
+      ['Ferse vor–zurück','Ferse bleibt am Boden, Vorfuß kontrolliert bewegen.','12 Wiederholungen',4,'2 MIN'],
+      ['Seitliche Gewichtsverlagerung','Mit Halt Gewicht langsam rechts und links verlagern.','10 Wechsel',5,'3 MIN'],
+      ['Bewusster Schritt','Fuß zuerst anheben, dann ruhig nach vorn setzen.','8 je Seite',1,'3 MIN'],
+      ['Sanfte Dehnung','Wade und Fußrücken ohne Schmerz mobilisieren.','2 × 20 Sek.',7,'3 MIN']
+    ]},
+    {title:'TAG 4 · KRAFT',items:[
+      ['Isometrie stark','Vorfuß gegen Widerstand ziehen, ohne sichtbare Bewegung.','6 × 5 Sek.',3,'3 MIN'],
+      ['Band-Fußhebung','Leichtes Band, kurze saubere Bewegung.','10–12 Wiederholungen',6,'3 MIN'],
+      ['Langsames Senken','Oben kurz halten, vier Sekunden absenken.','8 Wiederholungen',1,'3 MIN'],
+      ['Fersenstand beidbeinig','Mit beiden Händen sicher festhalten.','10 Wiederholungen',4,'3 MIN'],
+      ['Sitzmarsch','Knie abwechselnd heben, Fußspitze aktiv anziehen.','12 Wechsel',5,'3 MIN'],
+      ['Außenführung klein','Fußspitze leicht nach außen, nicht aus dem Knie drehen.','8 Wiederholungen',5,'2 MIN'],
+      ['Mobilisation','Mit dem Tuch entspannen und die Wade sanft dehnen.','2 × 20 Sek.',7,'3 MIN']
+    ]},
+    {title:'TAG 5 · GANGSICHERHEIT',items:[
+      ['Vorbereitung im Sitzen','Fußheben und bewusst langsam absetzen.','12 Wiederholungen',1,'2 MIN'],
+      ['Fersenstand mit Halt','Vorfüße anheben, Oberkörper bleibt aufrecht.','10 Wiederholungen',4,'3 MIN'],
+      ['Schritt vor und zurück','Mit Halt einen kleinen Schritt setzen und zurückführen.','8 je Seite',5,'3 MIN'],
+      ['Seitwärtsschritt','Kleine Schritte seitlich, Füße nicht kreuzen.','6 je Richtung',5,'3 MIN'],
+      ['Knieheben niedrig','Knie nur wenig anheben, Fußspitze aktiv hochziehen.','10 Wechsel',4,'3 MIN'],
+      ['Bewusstes Gehen','Kurze Strecke, Blick nach vorn, Fuß deutlich anheben.','3 Minuten',1,'3 MIN'],
+      ['Wade entspannen','Im Sitzen ausschütteln und sanft mobilisieren.','3 Minuten',7,'3 MIN']
+    ]},
+    {title:'TAG 6 · MOBILITÄT',items:[
+      ['Fußkreisen klein','Kleine Kreise, ohne aus dem Knie mitzudrehen.','8 je Richtung',2,'3 MIN'],
+      ['Fußalphabet','Nur kleine, schmerzfreie Buchstaben zeichnen.','A bis J',2,'3 MIN'],
+      ['Ferse–Spitze','Ruhiger Wechsel im Sitzen.','15 Wechsel',4,'3 MIN'],
+      ['Handtuchzug sanft','Fußspitze heranziehen, Knie bleibt locker.','2 × 20 Sek.',7,'3 MIN'],
+      ['Aktiv-assistiert','Fuß anheben, Hände helfen nur am Ende.','10 Wiederholungen',3,'3 MIN'],
+      ['Zehen anheben','Alle Zehen gemeinsam anheben und langsam ablegen.','12 Wiederholungen',1,'2 MIN'],
+      ['Entspannung','Fuß locker bewegen und ruhig weiteratmen.','3 Minuten',7,'3 MIN']
+    ]},
+    {title:'TAG 7 · WOCHENMIX',items:[
+      ['Aktive Fußhebung','Sauber und ohne Schwung.','12 Wiederholungen',1,'3 MIN'],
+      ['Isometrie','Gegen leichten Widerstand halten.','5 × 5 Sek.',3,'2 MIN'],
+      ['Band leicht','Kontrolliert anheben und langsam lösen.','10 Wiederholungen',6,'3 MIN'],
+      ['Fersenstand','Mit sicherem Halt.','10 Wiederholungen',4,'3 MIN'],
+      ['Sitzmarsch','Knie und Fuß gemeinsam aktivieren.','10 Wechsel',5,'3 MIN'],
+      ['Bewusste Schritte','Kurze sichere Strecke, Fuß deutlich anheben.','3 Minuten',1,'3 MIN'],
+      ['Wade und Fuß lösen','Sanft mobilisieren und entspannen.','2 × 20 Sek.',7,'3 MIN']
+    ]}
+  ];
+
+  let day = Math.min(7,Math.max(1,parseInt(localStorage.getItem('fussheberDay') || '1',10)));
+  const grid = document.getElementById('exerciseGrid');
+  const title = document.getElementById('dayTitle');
+  const dayNumber = document.getElementById('dayNumber');
+  const dots = document.getElementById('weekDots');
+  const caption = document.getElementById('progressCaption');
+  const labels=['MO','DI','MI','DO','FR','SA','SO'];
+
+  function renderDay(){
+    const plan=plans[day-1];
+    title.textContent=plan.title;
+    dayNumber.textContent=day;
+    grid.innerHTML=plan.items.map((it,i)=>`<article class="exercise-card">
+      <img class="exercise-image" src="assets/exercise-${it[3]}.jpg" alt="Übung ${i+1}: ${it[0]}">
+      <div class="exercise-copy">
+        <div class="exercise-head"><span class="exercise-num">${i+1}</span><span class="exercise-time">${it[4]}</span></div>
+        <div class="exercise-name">${it[0]}</div>
+        <p class="exercise-desc">${it[1]}</p>
+        <div class="exercise-dose">${it[2]}</div>
+      </div>
+    </article>`).join('');
+    dots.innerHTML=labels.map((l,i)=>`<div class="dot-item">${l}<div class="dot ${i<day-1?'done':''}"></div></div>`).join('');
+    caption.textContent=day===7?'WOCHENZIEL FAST GESCHAFFT':'ZIEL: 7 TAGE IN FOLGE';
+    localStorage.setItem('fussheberDay',String(day));
+  }
+  document.getElementById('prevDay').addEventListener('click',()=>{day=day===1?7:day-1;renderDay();window.scrollTo({top:0,behavior:'smooth'});});
+  document.getElementById('nextDay').addEventListener('click',()=>{day=day===7?1:day+1;renderDay();window.scrollTo({top:0,behavior:'smooth'});});
+  document.getElementById('finishDay').addEventListener('click',()=>{
+    if(day<7){day++;renderDay();alert('Sehr gut. Der nächste Fußheber-Tag ist vorbereitet.');}
+    else{day=1;renderDay();alert('Woche geschafft. Du startest wieder ruhig mit Tag 1.');}
+  });
+  renderDay();
+
+  let seconds=20*60, interval=null;
+  const display=document.getElementById('timer');
+  const status=document.getElementById('status');
+  function renderTimer(){const m=Math.floor(seconds/60),s=seconds%60;display.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
+  function start(){if(interval||seconds<=0)return;status.textContent='Training läuft.';interval=setInterval(()=>{seconds--;renderTimer();if(seconds<=0){clearInterval(interval);interval=null;status.textContent='Geschafft!';alert('Stark gemacht – deine 20 Minuten sind geschafft.');}},1000);}
+  function pause(){if(interval)clearInterval(interval);interval=null;status.textContent='Timer pausiert.';}
+  function reset(){pause();seconds=20*60;renderTimer();status.textContent='Bereit für dein Training.';}
+  document.getElementById('done').addEventListener('click',()=>document.getElementById('finishDay').click());
+  [['start',start],['mStart',start],['pause',pause],['mPause',pause],['reset',reset],['mReset',reset]].forEach(([id,fn])=>document.getElementById(id)?.addEventListener('click',fn));
+  renderTimer();
 })();
 </script>
 </body>

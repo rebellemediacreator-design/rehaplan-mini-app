@@ -1,30 +1,12 @@
-# Fußheber Mini-App
+# Fußheber Mini-App – 7 Tage
 
-Eine mobile, altersgerechte 20-Minuten-Mini-App für ein physiotherapeutisches Heimübungsprogramm bei Fußheberschwäche.
+GitHub-Pages-fertige Mini-App mit sieben unterschiedlichen, altersgerechten Fußheber-Tagen.
 
-## Enthalten
+## Upload
+Den **Inhalt dieses Ordners** in das Hauptverzeichnis des GitHub-Repositories laden:
 
-- vollständige `index.html`
-- Übungsposter unter `assets/poster.png`
-- funktionierender 20-Minuten-Timer
-- Pausen- und Neustartfunktion
-- 30-Tage-Fortschrittszähler im Browser
-- responsives Layout für Smartphone, Tablet und Desktop
+- `index.html`
+- `.nojekyll`
+- Ordner `assets`
 
-## Physiotherapeutische Grundsätze
-
-- langsam und kontrolliert bewegen
-- keine ruckartigen Bewegungen
-- im Stand immer eine stabile Haltemöglichkeit nutzen
-- keine Bodenübungen
-- nur schmerzfrei trainieren
-- bei neuer oder zunehmender Schwäche, häufigem Stolpern oder neuen Lähmungserscheinungen ärztlich oder physiotherapeutisch rückmelden
-
-## GitHub Pages
-
-1. Den Inhalt dieses Ordners in das Hauptverzeichnis des GitHub-Repositories hochladen.
-2. Unter **Settings → Pages** als Quelle **Deploy from a branch** wählen.
-3. Branch `main` und Ordner `/ (root)` auswählen.
-4. Speichern.
-
-Wichtig: `index.html` und der Ordner `assets` müssen nebeneinander im Hauptverzeichnis liegen.
+Die Übungsbilder wurden in Version 3 als reine Bildausschnitte neu zugeschnitten, damit sie in den Karten nicht mehr verrutschen oder Text aus dem Originalposter zeigen.
